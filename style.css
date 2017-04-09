@@ -1,0 +1,33 @@
+#resource1 {
+	width: 20px;
+	height: 20px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	background: red;
+	position: absolute;
+	left: 90px;
+	top: 311px;
+}
+
+#main {
+	width: 800px;
+	height: 600px;
+	background-image: url(map.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+button {
+	margin-top: 20px;
+	line-height: 60px;
+	font-weight: bold;
+	padding: 0 48px;
+	background: salmon;
+	border: none;
+}
+
+button:hover {
+	background: lightsalmon;
+}
