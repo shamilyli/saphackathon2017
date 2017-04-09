@@ -1,9 +1,30 @@
 var aResources = [];
+var sDraggedElementId;
+
+function mouseUp() {
+	sDraggedElementId = null;
+    window.removeEventListener('mousemove', divMove, true);
+}
+
+function mouseDown(e) {
+	sDraggedElementId = e.currentTarget.id;
+	window.addEventListener('mousemove', divMove, true);
+}
+
+function divMove(e) {
+	var div = document.getElementById(sDraggedElementId);
+	div.style.position = 'absolute';
+	div.style.top = e.clientY + 'px';
+	div.style.left = e.clientX + 'px';
+}
 
 function _createResourceDiv(oResource) {
 	var oElement = document.createElement("div");
 	oElement.id = oResource.id;
 	oElement.className = "circle";
+	oElement.addEventListener('mousedown', mouseDown, false);
+    window.addEventListener('mouseup', mouseUp, false);
+
 	return oElement;
 }
 
@@ -17,9 +38,10 @@ function createDivForResourceOnMap(oResource) {
 	_addResourceDivToMap(oElement);	
 }
 
-function addResource() {
+function addResource(sResourceName) {
 	var oResource = {
 		id : "resource" + aResources.length,
+		name: sResourceName,
 		isUsed : false
 	}
 	aResources.push(oResource);
@@ -29,14 +51,24 @@ function addResource() {
 function _sendReq() {
 	return [
 	{
-		id : "resource0",
+		name : "washroom0",
 		isUsed: true
 	}];
 }
 
+function _updateResources(aUpdatedResources) {
+	for (let i = 0; i < aUpdatedResources.length; i++) {
+		for (let j = 0; j < aResources.length; j++) {
+			if (aUpdatedResources[i].name === aResources[j].name) {
+				aResources[j].isUsed = aUpdatedResources[i].isUsed;
+			}
+		}
+	}
+}
+
 function refreshData() {
 	var aUpdatedResources = _sendReq();
-	aResources = aUpdatedResources;
+	_updateResources(aUpdatedResources);
 	renderUpdatedResources();
 }
 
@@ -57,12 +89,22 @@ function _createRefreshButton() {
 	return oButton;
 }
 
+function _createAddResourceButton() {
+	var oButton = document.createElement("button");
+	oButton.innerHTML = "Add";
+	oButton.addEventListener("click", function() {
+		addResource("washroom" + aResources.length);
+	});
+	return oButton;	
+}
+
 function createToolbar() {
-	var oButton = _createRefreshButton();
 	var oToolbar = document.getElementById("toolbar");
-	oToolbar.appendChild(oButton);
+	var oRefreshButton = _createRefreshButton();
+	var oAddResourceButton = _createAddResourceButton();
+	oToolbar.appendChild(oRefreshButton);
+	oToolbar.appendChild(oAddResourceButton);
 }
 
 
 createToolbar();
-addResource();
