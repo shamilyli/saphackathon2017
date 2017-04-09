@@ -1,49 +1,37 @@
-var aResources = [
-	{
-		id : "resource1",
-		isUsed: true
-	}, {
-		id : "resource2",
-		isUsed: false
-	}, {
-		id : "resource3",
-		isUsed: true
-	}
-];
+var aResources = [];
 
 function _createResourceDiv(oResource) {
 	var oElement = document.createElement("div");
 	oElement.id = oResource.id;
+	oElement.className = "circle";
 	return oElement;
 }
 
+function _addResourceDivToMap(oElement) {
+	var oMainDiv = document.getElementById("main");
+	oMainDiv.appendChild(oElement);
+}
 
+function createDivForResourceOnMap(oResource) {
+	var oElement = _createResourceDiv(oResource);
+	_addResourceDivToMap(oElement);	
+}
 
 function addResource() {
 	var oResource = {
 		id : "resource" + aResources.length,
 		isUsed : false
 	}
-	var oElement = _createResourceDiv(oResource);
-	var oMainDiv = document.getElementById("main");
-	oMainDiv.appendChild(oElement);
 	aResources.push(oResource);
+	createDivForResourceOnMap(oResource);
 }
-
 
 function _sendReq() {
 	return [
 	{
-		id : "resource1",
-		isUsed: false
-	}, {
-		id : "resource2",
-		isUsed: false
-	}, {
-		id : "resource3",
+		id : "resource0",
 		isUsed: true
-	}
-	];
+	}];
 }
 
 function refreshData() {
@@ -77,3 +65,4 @@ function createToolbar() {
 
 
 createToolbar();
+addResource();
