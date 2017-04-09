@@ -29,6 +29,7 @@ function _createResourceDiv(oResource) {
 	oElement.id = oResource.id;
 	oElement.className = "circle";
 	setElementPosition(oElement);
+	$(oElement).attr('title', oResource.name);
 	oElement.addEventListener('mousedown', mouseDown, false);
     window.addEventListener('mouseup', mouseUp, false);
 
@@ -55,12 +56,28 @@ function addResource(sResourceName) {
 	createDivForResourceOnMap(oResource);
 }
 
-function _sendReq() {
-	return [
-	{
-		name : "washroom0",
-		isUsed: true
-	}];
+function _sendReq(oResource) {
+	var sBaseUrl = "http://ec2-34-209-46-58.us-west-2.compute.amazonaws.com:5000/";
+	var sAction = "status?";
+	var sUdid = "udid=" + oResource.name;
+	var sUrl = sBaseUrl + sAction + sUrl;
+	var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", sUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+	// return [
+	// {
+	// 	name : "washroom0",
+	// 	isUsed: true
+	// }];
+}
+
+function _sendReqGrp() {
+	for (var i = 0; i < aResources.length; i++) {
+		var oResource = aResources[i];
+		var sResponseText = _sendReq(oResource);
+		oResource.isUsed = sResponseText === "closed" ? true : false;
+	}
 }
 
 function _updateResources(aUpdatedResources) {
@@ -74,7 +91,7 @@ function _updateResources(aUpdatedResources) {
 }
 
 function refreshData() {
-	var aUpdatedResources = _sendReq();
+	var aUpdatedResources = _sendReqGrp();
 	_updateResources(aUpdatedResources);
 	renderUpdatedResources();
 }
@@ -88,7 +105,9 @@ function renderUpdatedResources() {
 }
 
 function _updateTime() {
-	
+	var oDate = new Date();
+	$('#last-updated').text("Last updated: " + oDate.toString());
+
 }
 
 function _createRefreshButton() {
