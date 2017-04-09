@@ -6,22 +6,25 @@ function mouseUp() {
     window.removeEventListener('mousemove', divMove, true);
 }
 
-function mouseDown(e) {
-	sDraggedElementId = e.currentTarget.id;
+function mouseDown(oEvent) {
+	sDraggedElementId = oEvent.currentTarget.id;
 	window.addEventListener('mousemove', divMove, true);
 }
 
-function divMove(e) {
-	var div = document.getElementById(sDraggedElementId);
-	div.style.position = 'absolute';
-	div.style.top = e.clientY + 'px';
-	div.style.left = e.clientX + 'px';
+function divMove(oEvent) {
+	var oDiv = document.getElementById(sDraggedElementId);
+	oDiv.style.position = 'absolute';
+	oDiv.style.top = oEvent.clientY + 'px';
+	oDiv.style.left = oEvent.clientX + 'px';
 }
 
 function _createResourceDiv(oResource) {
 	var oElement = document.createElement("div");
 	oElement.id = oResource.id;
 	oElement.className = "circle";
+	var oPosition = $('#addResourceButton').position();
+	oElement.style.top = (oPosition.top + 40) + 'px';
+	oElement.style.left = (oPosition.left + 130) + 'px';
 	oElement.addEventListener('mousedown', mouseDown, false);
     window.addEventListener('mouseup', mouseUp, false);
 
@@ -82,6 +85,7 @@ function renderUpdatedResources() {
 
 function _createRefreshButton() {
 	var oButton = document.createElement("button");
+	oButton.id = "refreshButton";
 	oButton.innerHTML = "Refresh";
 	oButton.addEventListener("click", function() {
 		refreshData();
@@ -91,6 +95,7 @@ function _createRefreshButton() {
 
 function _createAddResourceButton() {
 	var oButton = document.createElement("button");
+	oButton.id = "addResourceButton";
 	oButton.innerHTML = "Add";
 	oButton.addEventListener("click", function() {
 		addResource("washroom" + aResources.length);
