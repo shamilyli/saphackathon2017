@@ -18,13 +18,17 @@ function divMove(oEvent) {
 	oDiv.style.left = oEvent.clientX + 'px';
 }
 
+function setElementPosition(oElement) {
+	var oPosition = $('#addResourceButton').position();
+	oElement.style.top = (oPosition.top + 40) + 'px';
+	oElement.style.left = (oPosition.left + 130) + 'px';	
+}
+
 function _createResourceDiv(oResource) {
 	var oElement = document.createElement("div");
 	oElement.id = oResource.id;
 	oElement.className = "circle";
-	var oPosition = $('#addResourceButton').position();
-	oElement.style.top = (oPosition.top + 40) + 'px';
-	oElement.style.left = (oPosition.left + 130) + 'px';
+	setElementPosition(oElement);
 	oElement.addEventListener('mousedown', mouseDown, false);
     window.addEventListener('mouseup', mouseUp, false);
 
@@ -83,11 +87,16 @@ function renderUpdatedResources() {
 	}
 }
 
+function _updateTime() {
+	
+}
+
 function _createRefreshButton() {
 	var oButton = document.createElement("button");
 	oButton.id = "refreshButton";
 	oButton.innerHTML = "Refresh";
 	oButton.addEventListener("click", function() {
+		_updateTime();
 		refreshData();
 	});
 	return oButton;
