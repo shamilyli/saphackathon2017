@@ -1,10 +1,13 @@
 #main {
-	width: 1500px;
-	height: 1000px;
 	background-image: url(vdc_3rd_floor.png);
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center center;
+	height: 75%;
+    max-height: 100%;
+    overflow: auto;
+    width:100%;
+    
 }
 
 button {
@@ -28,4 +31,15 @@ button:hover {
 	border-radius: 10px;
 	background: green;
 	position: absolute;
+}
+
+html{
+    overflow:hidden;
+    height: 100%;
+    max-height: 100%;
+}
+body {
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
 }
